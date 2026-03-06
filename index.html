@@ -4,12 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>سكربت التفاحه</title>
+    
     <meta name="monetag" content="1d811128b0e4a8db5982ba77e65fb04b">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8072336201634398"
      crossorigin="anonymous"></script>
     <script src="https://pl28860619.effectivegatecpm.com/eb/f3/7f/ebf37fd579faa4ee60638e346a27c6e8.js"></script>
     <script>(function(s){s.dataset.zone='10692068',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
     <script src="https://5gvci.com/act/files/tag.min.js?z=10692039" data-cfasync="false" async></script>
+
     <style>
         /* التنسيقات الأساسية */
         body {
@@ -60,8 +62,8 @@
             font-weight: bold;
             cursor: pointer;
             transition: background-color 0.3s, transform 0.1s;
-            text-decoration: none; /* عشان الروابط متظهرش تحتها خط */
-            display: inline-block; /* عشان تظبط مع الـ links */
+            text-decoration: none; 
+            display: inline-block; 
             box-sizing: border-box;
         }
         
@@ -69,7 +71,6 @@
             transform: scale(0.95);
         }
 
-        /* تنسيقات الأزرار في صفحة الدخول */
         .auth-buttons {
             display: flex;
             flex-direction: column;
@@ -80,7 +81,6 @@
         #watchAdBtn { background-color: #f39c12; color: white; width: 100%; }
         #watchAdBtn:hover { background-color: #d68910; }
 
-        /* أزرار السوشيال ميديا */
         .social-buttons {
             display: flex;
             gap: 10px;
@@ -88,18 +88,10 @@
             width: 100%;
         }
 
-        .youtube-btn { 
-            background-color: #ff0000; 
-            color: white; 
-            flex: 1; 
-        }
+        .youtube-btn { background-color: #ff0000; color: white; flex: 1; }
         .youtube-btn:hover { background-color: #cc0000; }
 
-        .telegram-btn { 
-            background-color: #0088cc; 
-            color: white; 
-            flex: 1; 
-        }
+        .telegram-btn { background-color: #0088cc; color: white; flex: 1; }
         .telegram-btn:hover { background-color: #006699; }
 
         /* تنسيقات أزرار اللعبة */
@@ -118,7 +110,6 @@
         #resetBtn { background-color: #3498db; color: white; }
         #resetBtn:hover { background-color: #2980b9; }
 
-        /* تنسيقات البوب أب (Popup) */
         .popup-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -152,7 +143,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* حاوية الدوائر للعبة */
         .circles-container {
             display: flex;
             justify-content: center;
@@ -179,6 +169,13 @@
             transform: scale(1.15);
             box-shadow: 0 0 15px rgba(76, 175, 80, 0.6);
         }
+
+        /* تنسيق مساحة إعلان جوجل عشان يكون شكله متناسق */
+        .adsense-container {
+            margin-top: 20px;
+            width: 100%;
+            min-height: 50px; /* مساحة احتياطية عشان شكل الصندوق ميبوظش قبل ما الإعلان يحمل */
+        }
     </style>
 </head>
 <body>
@@ -193,11 +190,22 @@
             
             <div class="social-buttons">
                 <a href="https://www.youtube.com/@BAZOKA1xBet" target="_blank" class="link-btn youtube-btn">يوتيوب ▶️</a>
-                
                 <a href="https://t.me/bazokamelbet" target="_blank" class="link-btn telegram-btn">تليجرام ✈️</a>
             </div>
         </div>
-    </div>
+
+        <div class="adsense-container">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-8072336201634398"
+                 data-ad-slot="5974848269"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+        </div>
 
     <div id="popupOverlay" class="popup-overlay">
         <div class="popup-content">

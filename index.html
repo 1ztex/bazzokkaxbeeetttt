@@ -7,6 +7,7 @@
     <meta name="monetag" content="1d811128b0e4a8db5982ba77e65fb04b">
     
     <script src="https://5gvci.com/act/files/tag.min.js?z=10692039" data-cfasync="false" async></script>
+
     <style>
         /* التنسيقات الأساسية */
         body {
@@ -64,7 +65,7 @@
             font-weight: bold;
             cursor: pointer;
             transition: background-color 0.3s, transform 0.1s;
-            flex: 1; /* عشان الزرارين يكونوا نفس الحجم */
+            flex: 1; 
         }
         
         button:active {
@@ -77,7 +78,6 @@
         #revealBtn { background-color: #e74c3c; color: white; }
         #revealBtn:hover { background-color: #c0392b; }
 
-        /* شلنا الـ display: none عشان يفضل ظاهر علطول */
         #resetBtn { background-color: #3498db; color: white; }
         #resetBtn:hover { background-color: #2980b9; }
 
@@ -192,44 +192,41 @@
             window.open(monetagLink, '_blank');
             document.getElementById('popupOverlay').style.display = 'flex';
 
+            // 👇 تم تعديل الوقت هنا لـ 8000 مللي ثانية (8 ثواني) 👇
             setTimeout(() => {
                 document.getElementById('popupOverlay').style.display = 'none';
                 document.getElementById('authSection').style.display = 'none';
                 document.getElementById('gameSection').style.display = 'block';
-            }, 5000); 
+            }, 8000); 
         }
 
         const circles = document.querySelectorAll('.circle');
-        
-        // متغير لمراقبة حالة اللعبة
         let isAppleRevealed = false;
 
         function revealApple() {
-            // لو التفاحة ظاهرة بالفعل، الدالة مش هتعمل حاجة عشان تمنع التكرار
-            if (isAppleRevealed) return; 
+            circles.forEach(circle => {
+                circle.innerHTML = '';
+                circle.classList.remove('active');
+            });
 
             const randomIndex = Math.floor(Math.random() * 5);
             circles[randomIndex].innerHTML = '🍎';
             circles[randomIndex].classList.add('active');
             
-            // تغيير حالة اللعبة لـ "تم الإظهار"
             isAppleRevealed = true;
         }
 
         function resetGame() {
-            // التحقق: لو العضو داس على جولة جديدة وهو لسه معملش إظهار
             if (!isAppleRevealed) {
                 alert("أنت في جولة بالفعل! برجاء الضغط على 'إظهار التفاحة' أولاً.");
-                return; // إيقاف الدالة هنا
+                return; 
             }
 
-            // لو كل حاجة تمام والتفاحة كانت ظاهرة، نعمل إعادة تعيين
             circles.forEach(circle => {
                 circle.innerHTML = '';
                 circle.classList.remove('active');
             });
             
-            // نرجع حالة اللعبة لـ "لم يتم الإظهار" عشان الجولة الجديدة
             isAppleRevealed = false;
         }
     </script>

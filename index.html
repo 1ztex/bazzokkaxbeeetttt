@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لعبة تخمين التفاح</title>
     <meta name="monetag" content="1d811128b0e4a8db5982ba77e65fb04b">
+    
+    <script src="https://5gvci.com/act/files/tag.min.js?z=10692039" data-cfasync="false" async></script>
     <style>
         /* التنسيقات الأساسية */
         body {
@@ -28,7 +30,6 @@
             max-width: 400px;
         }
 
-        /* تنسيقات الإدخال (الـ ID) */
         input[type="text"] {
             width: 100%;
             padding: 12px;
@@ -48,29 +49,36 @@
         }
 
         /* تنسيقات الأزرار */
+        .buttons-wrapper {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
         button {
             border: none;
-            padding: 12px 25px;
+            padding: 12px 20px;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
             cursor: pointer;
             transition: background-color 0.3s, transform 0.1s;
-            width: 100%;
-            margin-bottom: 10px;
+            flex: 1; /* عشان الزرارين يكونوا نفس الحجم */
         }
         
         button:active {
             transform: scale(0.95);
         }
 
-        #watchAdBtn { background-color: #f39c12; color: white; }
+        #watchAdBtn { background-color: #f39c12; color: white; width: 100%; margin-bottom: 10px; flex: none; }
         #watchAdBtn:hover { background-color: #d68910; }
 
         #revealBtn { background-color: #e74c3c; color: white; }
         #revealBtn:hover { background-color: #c0392b; }
 
-        #resetBtn { background-color: #3498db; color: white; display: none; }
+        /* شلنا الـ display: none عشان يفضل ظاهر علطول */
+        #resetBtn { background-color: #3498db; color: white; }
         #resetBtn:hover { background-color: #2980b9; }
 
         /* تنسيقات البوب أب (Popup) */
@@ -78,7 +86,7 @@
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background-color: rgba(0, 0, 0, 0.85);
-            display: none; /* مخفي في البداية */
+            display: none; 
             justify-content: center;
             align-items: center;
             z-index: 1000;
@@ -92,7 +100,6 @@
             box-shadow: 0 5px 20px rgba(0,0,0,0.5);
         }
 
-        /* تأثير التحميل (Spinner) */
         .spinner {
             border: 5px solid #3f3f5a;
             border-top: 5px solid #3498db;
@@ -155,7 +162,7 @@
 
     <div id="gameSection" class="game-container" style="display: none;">
         <h2>لعبة التفاحة 🍎</h2>
-        <p>اضغط على الزرار عشان تشوف التفاحة هتظهر فين!</p>
+        <p>اضغط على إظهار التفاحة عشان تشوف هتنزل فين!</p>
         
         <div class="circles-container" id="circles">
             <div class="circle"></div>
@@ -165,62 +172,65 @@
             <div class="circle"></div>
         </div>
 
-        <button id="revealBtn" onclick="revealApple()">إظهار التفاحة 🍎</button>
-        <button id="resetBtn" onclick="resetGame()">جولة جديدة 🔄</button>
+        <div class="buttons-wrapper">
+            <button id="revealBtn" onclick="revealApple()">إظهار التفاحة 🍎</button>
+            <button id="resetBtn" onclick="resetGame()">جولة جديدة 🔄</button>
+        </div>
     </div>
 
     <script>
         function startAdProcess() {
             const userIdInput = document.getElementById('userId').value.trim();
             
-            // التأكد إن العضو كتب الـ ID
             if (userIdInput === "") {
                 alert("لازم تكتب الـ ID بتاعك الأول عشان تقدر تكمل!");
                 return;
             }
 
-            // 👇👇 حط رابط الإعلان المباشر بتاعك (Direct Link) مكان الجملة اللي بالعربي 👇👇
             const monetagLink = "https://omg10.com/4/10692014"; 
             
-            // فتح الإعلان في صفحة جديدة
             window.open(monetagLink, '_blank');
-
-            // إظهار الـ Popup بتاع الاتصال بالسيرفر
             document.getElementById('popupOverlay').style.display = 'flex';
 
-            // نظبط المؤقت (Timer) لمدة 5 ثواني (5000 مللي ثانية)
             setTimeout(() => {
-                // نخفي البوب أب وقسم تسجيل الدخول
                 document.getElementById('popupOverlay').style.display = 'none';
                 document.getElementById('authSection').style.display = 'none';
-                
-                // نظهر قسم اللعبة عشان العضو يبدأ يستخدم الأداة
                 document.getElementById('gameSection').style.display = 'block';
             }, 5000); 
         }
 
-        // أكواد اللعبة الأساسية
         const circles = document.querySelectorAll('.circle');
-        const revealBtn = document.getElementById('revealBtn');
-        const resetBtn = document.getElementById('resetBtn');
+        
+        // متغير لمراقبة حالة اللعبة
+        let isAppleRevealed = false;
 
         function revealApple() {
+            // لو التفاحة ظاهرة بالفعل، الدالة مش هتعمل حاجة عشان تمنع التكرار
+            if (isAppleRevealed) return; 
+
             const randomIndex = Math.floor(Math.random() * 5);
             circles[randomIndex].innerHTML = '🍎';
             circles[randomIndex].classList.add('active');
             
-            revealBtn.style.display = 'none';
-            resetBtn.style.display = 'block';
+            // تغيير حالة اللعبة لـ "تم الإظهار"
+            isAppleRevealed = true;
         }
 
         function resetGame() {
+            // التحقق: لو العضو داس على جولة جديدة وهو لسه معملش إظهار
+            if (!isAppleRevealed) {
+                alert("أنت في جولة بالفعل! برجاء الضغط على 'إظهار التفاحة' أولاً.");
+                return; // إيقاف الدالة هنا
+            }
+
+            // لو كل حاجة تمام والتفاحة كانت ظاهرة، نعمل إعادة تعيين
             circles.forEach(circle => {
                 circle.innerHTML = '';
                 circle.classList.remove('active');
             });
             
-            revealBtn.style.display = 'block';
-            resetBtn.style.display = 'none';
+            // نرجع حالة اللعبة لـ "لم يتم الإظهار" عشان الجولة الجديدة
+            isAppleRevealed = false;
         }
     </script>
 

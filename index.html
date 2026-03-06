@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>سكربت التفاحه</title>
     <meta name="monetag" content="1d811128b0e4a8db5982ba77e65fb04b">
-    <script>(function(s){s.dataset.zone='10692068',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+    <script src="https://pl28860619.effectivegatecpm.com/eb/f3/7f/ebf37fd579faa4ee60638e346a27c6e8.js"></script>
     <script src="https://5gvci.com/act/files/tag.min.js?z=10692039" data-cfasync="false" async></script>
 
     <style>
@@ -49,15 +49,8 @@
             border-color: #3498db;
         }
 
-        /* تنسيقات الأزرار */
-        .buttons-wrapper {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin-top: 10px;
-        }
-
-        button {
+        /* تنسيقات الأزرار الأساسية */
+        button, .link-btn {
             border: none;
             padding: 12px 20px;
             border-radius: 8px;
@@ -65,15 +58,57 @@
             font-weight: bold;
             cursor: pointer;
             transition: background-color 0.3s, transform 0.1s;
-            flex: 1; 
+            text-decoration: none; /* عشان الروابط متظهرش تحتها خط */
+            display: inline-block; /* عشان تظبط مع الـ links */
+            box-sizing: border-box;
         }
         
-        button:active {
+        button:active, .link-btn:active {
             transform: scale(0.95);
         }
 
-        #watchAdBtn { background-color: #f39c12; color: white; width: 100%; margin-bottom: 10px; flex: none; }
+        /* تنسيقات الأزرار في صفحة الدخول */
+        .auth-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+        }
+
+        #watchAdBtn { background-color: #f39c12; color: white; width: 100%; }
         #watchAdBtn:hover { background-color: #d68910; }
+
+        /* أزرار السوشيال ميديا */
+        .social-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 5px;
+            width: 100%;
+        }
+
+        .youtube-btn { 
+            background-color: #ff0000; 
+            color: white; 
+            flex: 1; 
+        }
+        .youtube-btn:hover { background-color: #cc0000; }
+
+        .telegram-btn { 
+            background-color: #0088cc; 
+            color: white; 
+            flex: 1; 
+        }
+        .telegram-btn:hover { background-color: #006699; }
+
+        /* تنسيقات أزرار اللعبة */
+        .buttons-wrapper {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .buttons-wrapper button { flex: 1; }
 
         #revealBtn { background-color: #e74c3c; color: white; }
         #revealBtn:hover { background-color: #c0392b; }
@@ -150,7 +185,16 @@
         <h2>تسجيل الدخول 🔐</h2>
         <p>برجاء إدخال الـ ID الخاص بك للبدء</p>
         <input type="text" id="userId" placeholder="اكتب الـ ID الخاص بك هنا" required>
-        <button id="watchAdBtn" onclick="startAdProcess()">شاهد إعلان لتستطيع استعمال الأداة 📺</button>
+        
+        <div class="auth-buttons">
+            <button id="watchAdBtn" onclick="startAdProcess()">شاهد إعلان لتستطيع استعمال الأداة 📺</button>
+            
+            <div class="social-buttons">
+                <a href="https://www.youtube.com/@tex_tools" target="_blank" class="link-btn youtube-btn">يوتيوب ▶️</a>
+                
+                <a href="https://t.me/bazokamelbet" target="_blank" class="link-btn telegram-btn">تليجرام ✈️</a>
+            </div>
+        </div>
     </div>
 
     <div id="popupOverlay" class="popup-overlay">
@@ -192,7 +236,6 @@
             window.open(monetagLink, '_blank');
             document.getElementById('popupOverlay').style.display = 'flex';
 
-            // 👇 تم تعديل الوقت هنا لـ 8000 مللي ثانية (8 ثواني) 👇
             setTimeout(() => {
                 document.getElementById('popupOverlay').style.display = 'none';
                 document.getElementById('authSection').style.display = 'none';

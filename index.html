@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لعبة تخمين التفاحة</title>
+<meta name="monetag" content="bdbd899411c79a94f47e2398a0c3a014">
+    <style>
+        /* التنسيقات الأساسية */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1e1e2f;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        
+        .game-container {
+            background-color: #2a2a40;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        /* تنسيقات الإدخال (الـ ID) */
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border: 1px solid #3f3f5a;
+            background-color: #1e1e2f;
+            color: white;
+            font-size: 16px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        /* تنسيقات الأزرار */
+        button {
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        
+        button:active {
+            transform: scale(0.95);
+        }
+
+        #watchAdBtn { background-color: #f39c12; color: white; }
+        #watchAdBtn:hover { background-color: #d68910; }
+
+        #revealBtn { background-color: #e74c3c; color: white; }
+        #revealBtn:hover { background-color: #c0392b; }
+
+        #resetBtn { background-color: #3498db; color: white; display: none; }
+        #resetBtn:hover { background-color: #2980b9; }
+
+        /* تنسيقات البوب أب (Popup) */
+        .popup-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            display: none; /* مخفي في البداية */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .popup-content {
+            background-color: #2a2a40;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+        }
+
+        /* تأثير التحميل (Spinner) */
+        .spinner {
+            border: 5px solid #3f3f5a;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* حاوية الدوائر للعبة */
+        .circles-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+            direction: ltr;
+        }
+
+        .circle {
+            width: 60px;
+            height: 60px;
+            background-color: #3f3f5a;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            box-shadow: inset 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        .circle.active {
+            background-color: #4CAF50;
+            transform: scale(1.15);
+            box-shadow: 0 0 15px rgba(76, 175, 80, 0.6);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="authSection" class="game-container">
+        <h2>تسجيل الدخول 🔐</h2>
+        <p>برجاء إدخال الـ ID الخاص بك للبدء</p>
+        <input type="text" id="userId" placeholder="اكتب الـ ID الخاص بك هنا" required>
+        <button id="watchAdBtn" onclick="startAdProcess()">شاهد إعلان لتستطيع استعمال الأداة 📺</button>
+    </div>
+
+    <div id="popupOverlay" class="popup-overlay">
+        <div class="popup-content">
+            <div class="spinner"></div>
+            <h3 id="popupText">انتظر، يتم الاتصال بالسيرفر... ⏳</h3>
+        </div>
+    </div>
+
+    <div id="gameSection" class="game-container" style="display: none;">
+        <h2>لعبة التفاحة 🍎</h2>
+        <p>اضغط على الزرار عشان تشوف التفاحة هتظهر فين!</p>
+        
+        <div class="circles-container" id="circles">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+        </div>
+
+        <button id="revealBtn" onclick="revealApple()">إظهار التفاحة 🍎</button>
+        <button id="resetBtn" onclick="resetGame()">جولة جديدة 🔄</button>
+    </div>
+
+    <script>
+        function startAdProcess() {
+            const userIdInput = document.getElementById('userId').value.trim();
+            
+            // التأكد إن العضو كتب الـ ID
+            if (userIdInput === "") {
+                alert("لازم تكتب الـ ID بتاعك الأول عشان تقدر تكمل!");
+                return;
+            }
+
+            // هنا المفروض بيتم استدعاء كود الإعلان الحقيقي (زي إعلانات جوجل أو شركات تانية)
+            // هنعمل محاكاة كأن الإعلان بيتعرض دلوقتي
+            alert("تخيل إن في إعلان بيتعرض دلوقتي... 📺\n(هنا هيتحط كود شبكة الإعلانات الخاصة بيك)");
+
+            // بعد ما الإعلان يخلص، بنظهر الـ Popup بتاع السيرفر
+            document.getElementById('popupOverlay').style.display = 'flex';
+
+            // نظبط المؤقت (Timer) لمدة 5 ثواني (5000 مللي ثانية)
+            setTimeout(() => {
+                // نخفي البوب أب وقسم تسجيل الدخول
+                document.getElementById('popupOverlay').style.display = 'none';
+                document.getElementById('authSection').style.display = 'none';
+                
+                // نظهر قسم اللعبة عشان العضو يبدأ يستخدم الأداة
+                document.getElementById('gameSection').style.display = 'block';
+            }, 5000); 
+        }
+
+        // أكواد اللعبة الأساسية
+        const circles = document.querySelectorAll('.circle');
+        const revealBtn = document.getElementById('revealBtn');
+        const resetBtn = document.getElementById('resetBtn');
+
+        function revealApple() {
+            const randomIndex = Math.floor(Math.random() * 5);
+            circles[randomIndex].innerHTML = '🍎';
+            circles[randomIndex].classList.add('active');
+            
+            revealBtn.style.display = 'none';
+            resetBtn.style.display = 'block';
+        }
+
+        function resetGame() {
+            circles.forEach(circle => {
+                circle.innerHTML = '';
+                circle.classList.remove('active');
+            });
+            
+            revealBtn.style.display = 'block';
+            resetBtn.style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>
